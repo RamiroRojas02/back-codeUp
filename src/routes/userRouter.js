@@ -1,10 +1,12 @@
 import express from 'express'
-import {getAllUsers,createUser} from '../controllers/userController.js'
+import userController from '../controllers/userController.js'
 
 const userRouter = express.Router()
 
-userRouter.get('/',getAllUsers)
-userRouter.post('/',createUser)
+
+userRouter.post('/signUp',userController.signUp)
+userRouter.post('/signIn',userController.signIn)
+
 
 
 
