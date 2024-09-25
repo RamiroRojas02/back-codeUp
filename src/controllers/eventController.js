@@ -47,7 +47,19 @@ const eventCrontroller ={
         if(!event) throw new CustomError('Event not exist whith this id',404)
         res.status(201).json({error:false,response:event})
 
-    },
+    },async bookAtendance(req,res){
+        const eventId = req.body.eventId
+        const user = req.body.user
+    
+        const validate = validatObjectId(eventId)
+        if(!validate) throw new CustomError('Not valid Id',404)
+        const event = await eventService.getEventById(eventId)
+        if(!event) throw new CustomError('Event not exist whith this id',404)
+        
+        if(!eventService.reachMinimunAge(event.minimunAge,user.age)) throw new CustomError(`${user.name} is not old enough to attend this event`,409)
+    
+        if(event.attendees.length === event.place.ocupancy)throw new CustomError(`Event full`,409)
+      }
     
 
         

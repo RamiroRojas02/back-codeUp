@@ -28,18 +28,6 @@ const userController = {
     const token = jwt.sign({email:newUser.email},process.env.SECRET_KEY,{expiresIn:"1h"})
     
     res.status(200).json({ error: false, response:{userExist,token} });
-  },async bookAtendance(req,res){
-    const eventId = req.body.eventId
-    const user = req.body.user
-
-    const validate = validatObjectId(eventId)
-    if(!validate) throw new CustomError('Not valid Id',404)
-    const event = await eventService.getEventById(eventId)
-    if(!event) throw new CustomError('Event not exist whith this id',404)
-    
-    if(!eventService.reachMinimunAge(event.minimunAge,user.age)) throw new CustomError(`${user.name} is not old enough to attend the event`,409)
-
-    if(event.attendees.length === event.place.ocupancy)throw new CustomError(`Event full`,409)
   }
 };
 
